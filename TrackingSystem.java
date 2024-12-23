@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -5,8 +6,8 @@ import java.util.stream.Collectors;
 public class TrackingSystem implements AgentInterface,SellerInterface,BuyerInterface{
     private List<Transaction> transactions;
 
-    TrackingSystem(List<Transaction> transactions){
-        this.transactions = transactions;
+    TrackingSystem(){
+        this.transactions =  new ArrayList<Transaction>();
     }
 
     private<T extends TransactionInterface> List<T> filterTransaction(Class<T> c,Predicate<Transaction> tPredicate){
@@ -59,25 +60,4 @@ public class TrackingSystem implements AgentInterface,SellerInterface,BuyerInter
         return filterTransaction(AgentTransaction.class,t -> (t.getStatus() == TransactionStatus.ONGOING && t.isCurrentAgent(agent)));
     }
     
-    void DisplayTransaction(List<Transaction> transactions){
-        if(transactions.isEmpty()){
-            System.out.println("No Transactions Available...");
-            return;
-        }
-        System.out.println("S.No\tProduct\tSeller\tBuyer\tstartLocation\tcurrentLocation\tfinalLocation\tStatus\tMessage");
-        System.out.println("------------------------------------------------------");
-        for(int i=0;i<transactions.size();i++){
-            Transaction t = transactions.get(i);
-            StringBuilder str = new StringBuilder((""+(i+1)));
-            str.append(".\t"+t.getProduct().getName())
-                .append("\t"+t.getSeller().getName())
-                .append("\t"+t.getBuyer().getName())
-                .append("\t"+t.getStartLocation())
-                .append("\t"+t.getCurrentLocation())
-                .append("\t"+t.getDeliveryLocation())
-                .append("\t"+(t.getUserStatus() == StatusForUser.DELVERED ? "Delivered" : (t.getUserStatus() == StatusForUser.TRANSIT ? "In Transit" : "Cancelled will br delivered to seller" )))
-                .append("\t"+((t.getMessage() != null)?t.getMessage():"-"));
-            System.out.println(str.toString());   
-        }
-    }
 }

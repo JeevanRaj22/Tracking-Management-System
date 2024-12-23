@@ -41,7 +41,7 @@ public class AgentUI {
                 System.out.println("Invalid Choice...");
         }
     }
-
+    
     public void viewTransaction(BufferedReader br)throws Exception{
         System.out.println("\n\nCurrent Transactions:");
 
@@ -82,6 +82,7 @@ public class AgentUI {
                 .append("\t"+t.getDeliveryLocation());
             System.out.println(str.toString());
         }
+        
         System.out.print("\nChoose a Transaction(Enter 0 to exit):");
         int n = Integer.parseInt(br.readLine());
         

@@ -1,9 +1,11 @@
 import java.io.BufferedReader;
 import java.util.List;
 
-public class SellerUI extends TrackTransaction{
+public class SellerUI{
     private Seller seller;
     private SellerInterface tms;
+    TrackTransaction track = new TrackTransaction();
+
     SellerUI(User user,SellerInterface tms){
         this.tms = tms;
         this.seller = (Seller)user;
@@ -37,17 +39,7 @@ public class SellerUI extends TrackTransaction{
             return;
         }
 
-        displayDetails(transactions, br);
-        System.out.print("\nChoose a Transaction(Enter 0 to exit):");
-        int n = Integer.parseInt(br.readLine());
-        
-        if(n==0)
-            return;
-        if(n<1 || n>transactions.size()){
-            System.out.println("Invlaid input...");
-            return;
-        }
-        transactions.get(n-1).trackLocation();
+        track.trackTransaction(transactions, br);
     }
 
     public boolean initiateTransaction(BufferedReader br)throws Exception{
@@ -76,7 +68,7 @@ public class SellerUI extends TrackTransaction{
         }
 
         Order order = orders.remove(n-1);
-        Transaction t = new Transaction(order);
+        SellerTransaction t = new Transaction(order);
         return this.tms.addTransaction(t);
     }
 }

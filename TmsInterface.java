@@ -5,7 +5,7 @@ interface BuyerInterface{
 }
 
 interface SellerInterface{
-    boolean addTransaction(Transaction t);
+    boolean addTransaction(SellerTransaction t);
     List<SellerTransaction> getTransactions(Seller seller);
 }
 

@@ -13,7 +13,7 @@ import tms.users.User;
 public class SellerUI{
     private Seller seller;
     private SellerInterface tms;
-    TrackTransactionHelper track = new TrackTransactionHelper();
+    private TrackTransactionHelper track = new TrackTransactionHelper();
 
     public SellerUI(User user,SellerInterface tms){
         this.tms = tms;

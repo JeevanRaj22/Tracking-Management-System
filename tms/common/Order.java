@@ -24,8 +24,4 @@ public class Order {
     public Seller getSeller() {
         return seller;
     }
-
-    
-
-    
 }

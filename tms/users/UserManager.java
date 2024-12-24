@@ -1,9 +1,14 @@
+package tms.users;
+
+import tms.common.Product;
+import tms.common.Order;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class UserManager{
+public class UserManager{
     private List<User> users;
     private static UserManager instance;
     private UserManager(){
@@ -58,13 +63,13 @@ class UserManager{
         this.users.add(b3);
     }
 
-    public static UserManager getInstance(){
+    public static UserManager  getInstance(){
         if(UserManager.instance == null)
             UserManager.instance = new UserManager();
         return UserManager.instance;
     }
 
-    int login(BufferedReader br)throws IOException{
+    public int login(BufferedReader br)throws IOException{
         System.out.print("\n Enter userId:");
         int userId = Integer.parseInt(br.readLine());
 
@@ -86,7 +91,7 @@ class UserManager{
         return -1;
     }
 
-    boolean registerAgent(BufferedReader br)throws Exception{
+    public boolean registerAgent(BufferedReader br)throws Exception{
         System.out.print("\n\n");
         int userId;
         while(true){
@@ -108,25 +113,25 @@ class UserManager{
         return this.users.add(agent);
     }
 
-    boolean isBuyer(User user){
+    public boolean isBuyer(User user){
         if(user instanceof Buyer)
             return true;
         return false;
     }
 
-    boolean isSeller(User user){
+    public boolean isSeller(User user){
         if(user instanceof Seller)
             return true;
         return false;
     }
 
-    boolean isAgent(User user){
+    public boolean isAgent(User user){
         if(user instanceof DeliveryAgent)
             return true;
         return false;
     }
 
-    User getUser(int index){
+    public User getUser(int index){
         return this.users.get(index);
     }
 

@@ -1,11 +1,17 @@
+package tms.ui;
 import java.io.BufferedReader;
 import java.util.List;
 
+import tms.transaction.AgentInterface;
+import tms.transaction.AgentTransaction;
+import tms.users.DeliveryAgent;
+import tms.users.User;
+
 public class AgentUI {
-    DeliveryAgent agent;
-    AgentInterface tms;
+    private DeliveryAgent agent;
+    private AgentInterface tms;
     
-    AgentUI(User user,AgentInterface tms){
+    public AgentUI(User user,AgentInterface tms){
         this.agent = (DeliveryAgent)user;
         this.tms = tms;
     }
@@ -42,7 +48,7 @@ public class AgentUI {
         }
     }
     
-    public void viewTransaction(BufferedReader br)throws Exception{
+    private void viewTransaction(BufferedReader br)throws Exception{
         System.out.println("\n\nCurrent Transactions:");
 
         List<AgentTransaction> transactions = this.tms.getTransactions(this.agent);
@@ -64,8 +70,8 @@ public class AgentUI {
         }
     }
 
-    public boolean acceptTransaction(BufferedReader br)throws Exception{
-        List<AgentTransaction> transactions = this.tms.getTransactions(this.agent.serviceLocations);
+    private boolean acceptTransaction(BufferedReader br)throws Exception{
+        List<AgentTransaction> transactions = this.tms.getTransactions(this.agent.getServiceLocations());
         if(transactions.isEmpty()){
             System.out.println("No transactions available...");
             return false;
@@ -99,7 +105,7 @@ public class AgentUI {
         return t.addMovement(agent, location);
     }
 
-    public boolean updateTransaction(BufferedReader br)throws Exception{
+    private boolean updateTransaction(BufferedReader br)throws Exception{
         List<AgentTransaction> transactions = this.tms.getTransactions(this.agent);
         if(transactions.isEmpty()){
             System.out.println("No transactions available...");

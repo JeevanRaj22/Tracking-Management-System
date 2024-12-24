@@ -1,8 +1,13 @@
+package tms.common;
 import java.io.BufferedReader;
 import java.util.List;
 
-public class TrackTransaction {
-    void trackTransaction(List<? extends TransactionInterface> transactions,BufferedReader br)throws Exception{
+import tms.transaction.SellerTransaction;
+import tms.transaction.StatusForUser;
+import tms.transaction.TransactionInterface;
+
+public class TrackTransactionHelper {
+    public void trackTransaction(List<? extends TransactionInterface> transactions,BufferedReader br)throws Exception{
         System.out.println("\nChoose a transaction to Track:");
         if(transactions.isEmpty()){
             System.out.println("No Transactions Available...");
@@ -22,7 +27,7 @@ public class TrackTransaction {
         SellerTransaction t = (SellerTransaction)transactions.get(n-1);
         t.trackLocation();
     }
-    void displayDetails(List<? extends TransactionInterface> transactions,BufferedReader br)throws Exception{
+    public void displayDetails(List<? extends TransactionInterface> transactions,BufferedReader br)throws Exception{
         if(transactions.isEmpty()){
             System.out.println("No Transactions Available...");
             return;

@@ -1,9 +1,13 @@
+package tms.common;
+import tms.users.Buyer;
+import tms.users.Seller;
+
 public class Order {
     private Product product;
     private Buyer buyer;
     private Seller seller;
 
-    Order(Product product,Seller seller,Buyer buyer){
+    public Order(Product product,Seller seller,Buyer buyer){
         this.product = product;
         this.buyer = buyer;
         this.seller = seller;

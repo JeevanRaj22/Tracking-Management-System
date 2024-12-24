@@ -1,6 +1,5 @@
+package tms.users;
 import java.io.BufferedReader;
-import java.util.ArrayList;
-import java.util.List;
 
 enum UserRole{
     BUYER,
@@ -13,7 +12,7 @@ public abstract class User{
     private String password;
     private UserRole role;
 
-    User(int userId,String name,String address,String password,UserRole role){
+    public User(int userId,String name,String address,String password,UserRole role){
         this.userId = userId;
         this.name = name;
         this.address = address;
@@ -21,8 +20,9 @@ public abstract class User{
         this.role = role;
     }
 
-    public User(int userId){
+    public User(int userId,UserRole role){
         this.userId = userId;
+        this.role=role;
     }
 
     public int getUserId(){
@@ -72,8 +72,7 @@ public abstract class User{
         return this.role;
     }
 
-    public void getDetails(UserRole role,BufferedReader br)throws Exception{
-        this.role = role;
+    public void getDetails(BufferedReader br)throws Exception{
         String name;
         do{
             System.out.print("\nEnter name:");
@@ -94,66 +93,7 @@ public abstract class User{
     }
 }
 
-class Buyer extends User{
-    Buyer(int userId,String name,String address,String password){
-        super(userId,name,address,password,UserRole.BUYER);
-    }
-    
-}
 
-class Seller extends User{
-    private List<Order> orders;
 
-    Seller(int userId,String name,String address,String password){
-        super(userId,name,address,password,UserRole.SELLER);
-        orders = new ArrayList<Order>();
-    }
 
-    void addOrder(Order order){
-        this.orders.add(order);
-    }
 
-    List<Order> getOrders(){
-        return this.orders;
-    }
-}
-
-class DeliveryAgent extends User{
-    List<String> serviceLocations;
-
-    DeliveryAgent(int userId,String name,String address,String password){
-        super(userId,name,address,password,UserRole.AGENT);
-        serviceLocations = new ArrayList<String>();
-    }
-
-    DeliveryAgent(int userId,BufferedReader br)throws Exception{
-        super(userId);
-        serviceLocations = new ArrayList<String>();
-
-        this.getDetails(br);
-    }
-
-    boolean setServiceLocation(String location){
-        if(location == null || location.trim().isEmpty()){
-            System.out.println("\nLocation must not be empty:Try again...");
-            return false;
-        }
-        return serviceLocations.add(location);
-    }
-
-    void getDetails(BufferedReader br)throws Exception{
-        super.getDetails(UserRole.AGENT,br);
-        System.out.print("\nEnter the number of service Locations:");
-        int n = Integer.parseInt(br.readLine());
-
-        System.out.println("\nEnter service location one by one...");
-        int i = 0;
-        while(i<n){
-            while(!this.setServiceLocation(br.readLine())){
-                System.out.println("\nTry again...");
-            }
-            i++;
-        }
-    }
-
-}

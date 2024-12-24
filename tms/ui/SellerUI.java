@@ -1,12 +1,21 @@
+package tms.ui;
 import java.io.BufferedReader;
 import java.util.List;
+
+import tms.common.Order;
+import tms.common.TrackTransactionHelper;
+import tms.transaction.SellerInterface;
+import tms.transaction.SellerTransaction;
+import tms.transaction.Transaction;
+import tms.users.Seller;
+import tms.users.User;
 
 public class SellerUI{
     private Seller seller;
     private SellerInterface tms;
-    TrackTransaction track = new TrackTransaction();
+    TrackTransactionHelper track = new TrackTransactionHelper();
 
-    SellerUI(User user,SellerInterface tms){
+    public SellerUI(User user,SellerInterface tms){
         this.tms = tms;
         this.seller = (Seller)user;
     }  
@@ -32,7 +41,7 @@ public class SellerUI{
         }
     }
 
-    public void viewTransaction(BufferedReader br)throws Exception{
+    private void viewTransaction(BufferedReader br)throws Exception{
         List<SellerTransaction> transactions = this.tms.getTransactions(this.seller);
         if(transactions.isEmpty()){
             System.out.println("No Transactions Available...");
@@ -42,7 +51,7 @@ public class SellerUI{
         track.trackTransaction(transactions, br);
     }
 
-    public boolean initiateTransaction(BufferedReader br)throws Exception{
+    private boolean initiateTransaction(BufferedReader br)throws Exception{
         List<Order> orders = this.seller.getOrders();
         if(orders.isEmpty()){
             System.out.println("\n\nNo orders available...");

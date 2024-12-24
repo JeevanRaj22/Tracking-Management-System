@@ -1,16 +1,15 @@
+package tms.transaction;
 import java.util.ArrayList;
 import java.util.List;
 
-enum TransactionStatus{
-    INITIAL,
-    ONGOING,
-    FINISHED;
-}
-enum StatusForUser{
-    TRANSIT,
-    CANCELLED,
-    DELVERED
-}
+import tms.users.Buyer;
+import tms.users.DeliveryAgent;
+import tms.users.Seller;
+import tms.common.Product;
+import tms.common.Order;
+
+
+
 
 public class Transaction implements BuyerTransaction,AgentTransaction{
     private Product product;
@@ -23,7 +22,7 @@ public class Transaction implements BuyerTransaction,AgentTransaction{
     private String message;
     
 
-    Transaction(Order order){
+    public Transaction(Order order){
         this.product= order.getProduct();
         this.seller = order.getSeller();
         this.buyer = order.getBuyer();
@@ -39,46 +38,57 @@ public class Transaction implements BuyerTransaction,AgentTransaction{
         message = null;
     } 
 
+    @Override
     public String getStartLocation(){
         return this.startLocation;
     }
 
+    @Override
     public String getDeliveryLocation(){
         return this.deliveryLocation;
     }
 
+    @Override
     public String getCurrentLocation(){
         return this.currentLocation;
     }
 
+    @Override
     public Buyer getBuyer(){
         return this.buyer;
     }
 
+    @Override
     public Seller getSeller(){
         return this.seller;
     }
    
+    @Override
     public TransactionStatus getStatus(){
         return this.status;
     }
 
+    @Override
     public StatusForUser getUserStatus(){
         return this.uStatus;
     }
 
+    @Override
     public Product getProduct(){
         return this.product;
     }
 
+    @Override
     public void setMessage(String message){
         this.message = message;
     }
-    
+  
+    @Override
     public String getMessage(){
         return this.message;
     }
 
+    @Override
     public boolean setCurrentLocation(String location){
         if(location == null || location.isEmpty()){
             System.out.println("Location must not be empty...");
@@ -95,18 +105,20 @@ public class Transaction implements BuyerTransaction,AgentTransaction{
         return true;
     }
 
+    @Override
     public boolean addMovement(DeliveryAgent agent,String location){
         Movement m = new Movement(this.currentLocation, location, agent);
         this.status = TransactionStatus.ONGOING;
         return movementHistory.add(m);
     }
 
+    @Override
     public void cancelTransaction(){
         this.uStatus = StatusForUser.CANCELLED;
         this.deliveryLocation = this.startLocation;
         // notify seller here
         if(this.status == TransactionStatus.ONGOING){
-            this.movementHistory.get(movementHistory.size()-1).endLocation = this.movementHistory.get(movementHistory.size()-1).startLocation;
+            this.movementHistory.get(movementHistory.size()-1).setEndLocation(this.movementHistory.get(movementHistory.size()-1).getStartLocation());;
             //notify agent here
         }else if(this.status == TransactionStatus.INITIAL){
             if(this.movementHistory.size()==0)
@@ -117,6 +129,7 @@ public class Transaction implements BuyerTransaction,AgentTransaction{
         }
     }
 
+    @Override
     public void trackLocation(){
         System.out.println("\n\nTransaction Information:");
         System.out.println("Product:"+this.getProduct().getName());
@@ -133,23 +146,25 @@ public class Transaction implements BuyerTransaction,AgentTransaction{
         int i = 0;
         while(i < this.movementHistory.size()){
             Movement m = this.movementHistory.get(i);
-            System.out.println("Start Location:"+ m.startLocation);
-            System.out.println("End Location:"+m.endLocation);
-            System.out.println("Agent:"+m.agent.getName());
+            System.out.println("Start Location:"+ m.getStartLocation());
+            System.out.println("End Location:"+m.getEndLocation());
+            System.out.println("Agent:"+m.getAgent().getName());
             
             System.out.println("\n");
             i++;
         } 
     }
 
+    @Override
     public boolean isCurrentAgent(DeliveryAgent agent){
         if(!this.movementHistory.isEmpty()){
-            return this.movementHistory.get(this.movementHistory.size()-1).agent.equals(agent);
+            return this.movementHistory.get(this.movementHistory.size()-1).getAgent().equals(agent);
         }
         return false;
     }
-    
+  
+    @Override
     public String getAgentDeliveryLocation(){
-        return this.movementHistory.get(this.movementHistory.size()-1).endLocation;
+        return this.movementHistory.get(this.movementHistory.size()-1).getEndLocation();
     }
 }
